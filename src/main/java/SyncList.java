@@ -4,6 +4,7 @@ public class SyncList extends SortList {
         super();
     }
 
+
     @Override
     public synchronized boolean add(Integer obj) {
         Entry prev = this.head;
@@ -13,11 +14,13 @@ public class SyncList extends SortList {
             curr = prev.next;
         }
         if (curr.object.equals(obj) || prev.object.equals(obj)) {
+            failureAdd++;
             return false;
         } else {
             Entry newEntry = new Entry(obj);
             newEntry.next = curr;
             prev.next = newEntry;
+            successfulAdd++;
             return true;
         }
     }
@@ -32,8 +35,10 @@ public class SyncList extends SortList {
         }
         if (curr.object.equals(obj)) {
             prev.next = curr.next;
+            successfulRemove++;
             return true;
         } else {
+            failureRemove++;
             return false;
         }
 
@@ -48,9 +53,12 @@ public class SyncList extends SortList {
             curr = prev.next;
         }
         if (curr.object.equals(obj) || prev.object.equals(obj)) {
+            successfulContains++;
             return true;
         } else {
+            failureContains++;
             return false;
         }
     }
+
 }

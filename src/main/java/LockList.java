@@ -20,11 +20,13 @@ public class LockList extends SortList {
                 curr = prev.next;
             }
             if (curr.object.equals(obj) || prev.object.equals(obj)) {
+                failureContains++;
                 return false;
             } else {
                 Entry newEntry = new Entry(obj);
                 newEntry.next = curr;
                 prev.next = newEntry;
+                successfulAdd++;
                 return true;
             }
         } finally {
@@ -44,8 +46,10 @@ public class LockList extends SortList {
             }
             if (curr.object.equals(obj)) {
                 prev.next = curr.next;
+                successfulRemove++;
                 return true;
             } else {
+                failureRemove++;
                 return false;
             }
         } finally {
@@ -65,8 +69,10 @@ public class LockList extends SortList {
                 curr = prev.next;
             }
             if (curr.object.equals(obj) || prev.object.equals(obj)) {
+                successfulContains++;
                 return true;
             } else {
+                failureContains++;
                 return false;
             }
         } finally {

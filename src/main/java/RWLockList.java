@@ -19,11 +19,13 @@ public class RWLockList extends SortList {
                 curr = prev.next;
             }
             if (curr.object.equals(obj) || prev.object.equals(obj)) {
+                failureAdd++;
                 return false;
             } else {
                 Entry newEntry = new Entry(obj);
                 newEntry.next = curr;
                 prev.next = newEntry;
+                successfulAdd++;
                 return true;
             }
         } finally {
@@ -35,6 +37,7 @@ public class RWLockList extends SortList {
     public boolean remove(Integer obj) {
         try {
             lock.writeLock().lock();
+            lock.readLock().lock();
             Entry prev = this.head;
             Entry curr = prev.next;
             while (curr.object.compareTo(obj) < 0) {
@@ -43,12 +46,15 @@ public class RWLockList extends SortList {
             }
             if (curr.object.equals(obj)) {
                 prev.next = curr.next;
+                successfulRemove++;
                 return true;
             } else {
+                failureRemove++;
                 return false;
             }
         } finally {
             lock.writeLock().unlock();
+            lock.readLock().unlock();
         }
 
     }
@@ -64,8 +70,10 @@ public class RWLockList extends SortList {
                 curr = prev.next;
             }
             if (curr.object.equals(obj) || prev.object.equals(obj)) {
+                successfulContains++;
                 return true;
             } else {
+                failureContains++;
                 return false;
             }
         } finally {

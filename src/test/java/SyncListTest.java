@@ -26,7 +26,7 @@ public class SyncListTest extends TestCase {
         }
     }
 
-    int randLen = 20_000;
+    int randLen = 50_000;
    public void testHelp(SortList list, String label) {
         RandomSeq seq = new RandomSeq(0, 80_000);
         List<Thread> addThreads = new ArrayList<>();
@@ -58,6 +58,13 @@ public class SyncListTest extends TestCase {
 
         System.out.println("ADD "+label+" execution task: "+endA+" ms");
 
+        // Save the length of the list after the addition operation is finished
+       long listLengthAfterAdds = list.size();
+       System.out.println("List length after add "+ listLengthAfterAdds);
+
+       System.out.println("Total number of successes add: "+list.successfulAdd+
+               ", failures add: "+list.failureAdd);
+
        long startC = System.currentTimeMillis();
 
        containThreads.stream().forEach(e -> e.start() );
@@ -70,6 +77,11 @@ public class SyncListTest extends TestCase {
        });
        long endC = System.currentTimeMillis() - startC;
        System.out.println("Contain "+label+" execution task: "+endC+" ms");
+
+
+       System.out.println("Total number of successes found: "+list.successfulContains+
+               ", failures found: "+list.failureContains);
+
 
        long startR = System.currentTimeMillis();
 
@@ -85,7 +97,15 @@ public class SyncListTest extends TestCase {
 
 
        System.out.println("Remove "+label+" execution task: "+endR+" ms");
-    }
+       // Save the length of the list after the removal operation is finished
+       long listLengthAfterRemove = list.size();
+       System.out.println("List length after remove "+ listLengthAfterRemove);
+       // Count the number of successful and failed deletions
+
+       System.out.println("Total number of successes removed: "+list.successfulRemove+
+               ", failures removed: "+list.failureRemove);
+
+   }
 
     public void testRun(){
         SyncList syncList = new SyncList();

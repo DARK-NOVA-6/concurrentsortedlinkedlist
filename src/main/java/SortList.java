@@ -1,8 +1,15 @@
 public abstract class SortList {
 
     public Entry head;
-
+    public long successfulRemove, failureRemove, successfulAdd, failureAdd,
+            successfulContains, failureContains;
     public SortList() {
+        successfulRemove = 0;
+        failureRemove = 0;
+        successfulAdd = 0;
+        failureAdd = 0;
+        successfulContains = 0;
+        failureContains = 0;
         this.head = new Entry(Integer.MIN_VALUE);
        this.head.next =new Entry(Integer.MAX_VALUE);
     }
@@ -18,5 +25,15 @@ public abstract class SortList {
             curr = curr.next;
 
         }
+    }
+
+    public int size() {
+        Entry curr = this.head;
+        int res = 0;
+        while (curr != null){
+            res++;
+            curr = curr.next;
+        }
+        return res;
     }
 }
